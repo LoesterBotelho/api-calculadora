@@ -44,18 +44,9 @@ public class CalculadoraService {
 	}
 
 	public CalculadoraResposta dividir(CalculadoraRequisicao request) {
-		
-		if ( request.getNumero2() == 0 ) {
-			return new CalculadoraResposta(
-					request.getNumero1(),
-					request.getNumero2(),
-					Operacoes.DIVIDIR,
-					0
-					);
-		}
-		
-		int resultadoDividir = request.getNumero1() / request.getNumero2();
-		
+
+		int resultadoDividir = request.getNumero2() == 0 ? 0 : request.getNumero1() / request.getNumero2();
+				
 		return new CalculadoraResposta(
 				request.getNumero1(),
 				request.getNumero2(),
