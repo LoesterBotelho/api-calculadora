@@ -2,10 +2,10 @@ package com.botelho.loester.api_calculadora.enums;
 
 public enum Operacoes {
 
-    SOMAR("Somar"),
-    SUBTRAIR("Subtrair"),
-    MULTIPLICAR("Multiplicar"),
-    DIVIDIR("Dividir");
+    SOMAR("SOMAR"),
+    SUBTRAIR("SUBTRAIR"),
+    MULTIPLICAR("MULTIPLICAR"),
+    DIVIDIR("DIVIDIR");
 
     private final String descricao;
 
