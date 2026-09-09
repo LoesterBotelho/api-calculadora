@@ -3,169 +3,1134 @@
     "_postman_id": "dc103e27-235a-49fe-8700-3d26132f3a9c",
     "name": "api-calculadora",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-    "_exporter_id": "2506144",
-    "_collection_link": "https://go.postman.co/collection/2506144-dc103e27-235a-49fe-8700-3d26132f3a9c?source=collection_link"
+    "_exporter_id": "2506144"
   },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080"
+    }
+  ],
   "item": [
     {
-      "name": "http://localhost:8080/calculadora/dividir",
-      "event": [
+      "name": "SOMAR",
+      "item": [
         {
-          "listen": "test",
-          "script": {
-            "type": "text/javascript",
-            "exec": [
-              "pm.test(\"Status code is 200\", function () {\n    pm.response.to.have.status(200);\n});\n\npm.test(\"Response body has the correct structure\", function () {\n    const jsonData = pm.response.json();\n    pm.expect(jsonData).to.have.property(\"numero1\");\n    pm.expect(jsonData).to.have.property(\"numero2\");\n    pm.expect(jsonData).to.have.property(\"operacao\");\n    pm.expect(jsonData).to.have.property(\"resultado\");\n});\n\npm.test(\"The 'operacao' field equals 'DIVIDIR'\", function () {\n    const jsonData = pm.response.json();\n    pm.expect(jsonData.operacao).to.eql(\"DIVIDIR\");\n});\n\npm.test(\"The 'resultado' is correct (10 / 5 = 2)\", function () {\n    const jsonData = pm.response.json();\n    pm.expect(jsonData.resultado).to.eql(2);\n});\n\npm.test(\"Response time is less than 2000ms\", function () {\n    pm.expect(pm.response.responseTime).to.be.below(2000);\n});"
-            ]
-          }
-        }
-      ],
-      "request": {
-        "method": "POST",
-        "header": [],
-        "body": {
-          "mode": "raw",
-          "raw": "{\r\n  \"numero1\": 10,\r\n  \"numero2\": 5\r\n}",
-          "options": {
-            "raw": {
-              "language": "json"
+          "name": "10 + 5 = 15",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const requestData = JSON.parse(pm.request.body.raw);",
+                  "const jsonData = pm.response.json();",
+                  "",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Content-Type is JSON\", function () {",
+                  "    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+                  "});",
+                  "",
+                  "pm.test(\"Response has exactly the expected fields\", function () {",
+                  "    pm.expect(jsonData).to.have.all.keys(\"numero1\", \"numero2\", \"operacao\", \"resultado\");",
+                  "});",
+                  "",
+                  "pm.test(\"numero1 is a number\", function () {",
+                  "    pm.expect(jsonData.numero1).to.be.a(\"number\");",
+                  "});",
+                  "",
+                  "pm.test(\"numero2 is a number\", function () {",
+                  "    pm.expect(jsonData.numero2).to.be.a(\"number\");",
+                  "});",
+                  "",
+                  "pm.test(\"resultado is a number\", function () {",
+                  "    pm.expect(jsonData.resultado).to.be.a(\"number\");",
+                  "});",
+                  "",
+                  "pm.test(\"numero1 matches request\", function () {",
+                  "    pm.expect(jsonData.numero1).to.eql(requestData.numero1);",
+                  "});",
+                  "",
+                  "pm.test(\"numero2 matches request\", function () {",
+                  "    pm.expect(jsonData.numero2).to.eql(requestData.numero2);",
+                  "});",
+                  "",
+                  "pm.test(\"Operation is SOMAR\", function () {",
+                  "    pm.expect(jsonData.operacao).to.eql(\"SOMAR\");",
+                  "});",
+                  "",
+                  "pm.test(\"Result is correct\", function () {",
+                  "    pm.expect(jsonData.resultado).to.eql(requestData.numero1 + requestData.numero2);",
+                  "});",
+                  "",
+                  "pm.test(\"Result is finite\", function () {",
+                  "    pm.expect(Number.isFinite(jsonData.resultado)).to.be.true;",
+                  "});",
+                  "",
+                  "pm.test(\"Response time is less than 2000ms\", function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "});"
+                ]
+              }
             }
-          }
-        },
-        "url": {
-          "raw": "http://localhost:8080/calculadora/dividir",
-          "protocol": "http",
-          "host": [
-            "localhost"
           ],
-          "port": "8080",
-          "path": [
-            "calculadora",
-            "dividir"
-          ]
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"numero1\": 10,\n  \"numero2\": 5\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/calculadora/somar",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "calculadora",
+                "somar"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "100 + 50 = 150",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const requestData = JSON.parse(pm.request.body.raw);",
+                  "const jsonData = pm.response.json();",
+                  "pm.test(\"Status code is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Content-Type is JSON\", () => pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\"));",
+                  "pm.test(\"Response structure is correct\", () => pm.expect(jsonData).to.have.all.keys(\"numero1\", \"numero2\", \"operacao\", \"resultado\"));",
+                  "pm.test(\"Request values are preserved\", () => { pm.expect(jsonData.numero1).to.eql(requestData.numero1); pm.expect(jsonData.numero2).to.eql(requestData.numero2); });",
+                  "pm.test(\"Operation is SOMAR\", () => pm.expect(jsonData.operacao).to.eql(\"SOMAR\"));",
+                  "pm.test(\"Result is correct\", () => pm.expect(jsonData.resultado).to.eql(requestData.numero1 + requestData.numero2));",
+                  "pm.test(\"Response time is less than 2000ms\", () => pm.expect(pm.response.responseTime).to.be.below(2000));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"numero1\": 100,\n  \"numero2\": 50\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/calculadora/somar",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "calculadora",
+                "somar"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "0 + 10 = 10",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const requestData = JSON.parse(pm.request.body.raw);",
+                  "const jsonData = pm.response.json();",
+                  "pm.test(\"Status code is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Response structure is correct\", () => pm.expect(jsonData).to.have.all.keys(\"numero1\", \"numero2\", \"operacao\", \"resultado\"));",
+                  "pm.test(\"Operation is SOMAR\", () => pm.expect(jsonData.operacao).to.eql(\"SOMAR\"));",
+                  "pm.test(\"Result is correct\", () => pm.expect(jsonData.resultado).to.eql(requestData.numero1 + requestData.numero2));",
+                  "pm.test(\"numero1 matches request\", () => pm.expect(jsonData.numero1).to.eql(requestData.numero1));",
+                  "pm.test(\"numero2 matches request\", () => pm.expect(jsonData.numero2).to.eql(requestData.numero2));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"numero1\": 0,\n  \"numero2\": 10\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/calculadora/somar",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "calculadora",
+                "somar"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "-10 + 5 = -5",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const requestData = JSON.parse(pm.request.body.raw);",
+                  "const jsonData = pm.response.json();",
+                  "pm.test(\"Status code is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Response structure is correct\", () => pm.expect(jsonData).to.have.all.keys(\"numero1\", \"numero2\", \"operacao\", \"resultado\"));",
+                  "pm.test(\"Operation is SOMAR\", () => pm.expect(jsonData.operacao).to.eql(\"SOMAR\"));",
+                  "pm.test(\"Result is correct\", () => pm.expect(jsonData.resultado).to.eql(requestData.numero1 + requestData.numero2));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"numero1\": -10,\n  \"numero2\": 5\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/calculadora/somar",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "calculadora",
+                "somar"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "-10 + -5 = -15",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const requestData = JSON.parse(pm.request.body.raw);",
+                  "const jsonData = pm.response.json();",
+                  "pm.test(\"Status code is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Response structure is correct\", () => pm.expect(jsonData).to.have.all.keys(\"numero1\", \"numero2\", \"operacao\", \"resultado\"));",
+                  "pm.test(\"Operation is SOMAR\", () => pm.expect(jsonData.operacao).to.eql(\"SOMAR\"));",
+                  "pm.test(\"Result is correct\", () => pm.expect(jsonData.resultado).to.eql(requestData.numero1 + requestData.numero2));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"numero1\": -10,\n  \"numero2\": -5\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/calculadora/somar",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "calculadora",
+                "somar"
+              ]
+            }
+          },
+          "response": []
         }
-      },
-      "response": []
+      ]
     },
     {
-      "name": "http://localhost:8080/calculadora/multiplicar",
-      "event": [
+      "name": "SUBTRAIR",
+      "item": [
         {
-          "listen": "test",
-          "script": {
-            "type": "text/javascript",
-            "exec": [
-              "// 1. Status code is 200\npm.test(\"Status code is 200\", function () {\n    pm.response.to.have.status(200);\n});\n\n// 2. Response body has the correct structure\npm.test(\"Response body has the correct structure\", function () {\n    const jsonData = pm.response.json();\n    pm.expect(jsonData).to.have.property(\"numero1\");\n    pm.expect(jsonData).to.have.property(\"numero2\");\n    pm.expect(jsonData).to.have.property(\"operacao\");\n    pm.expect(jsonData).to.have.property(\"resultado\");\n});\n\n// 3. The \"operacao\" field equals \"MULTIPLICAR\"\npm.test('The \"operacao\" field equals \"MULTIPLICAR\"', function () {\n    const jsonData = pm.response.json();\n    pm.expect(jsonData.operacao).to.eql(\"MULTIPLICAR\");\n});\n\n// 4. The \"resultado\" field equals the product of numero1 and numero2\npm.test(\"The \\\"resultado\\\" field equals the product of numero1 and numero2\", function () {\n    const jsonData = pm.response.json();\n    pm.expect(jsonData.resultado).to.eql(jsonData.numero1 * jsonData.numero2);\n});\n\n// 5. Response time is acceptable (under 2000ms)\npm.test(\"Response time is under 2000ms\", function () {\n    pm.expect(pm.response.responseTime).to.be.below(2000);\n});"
-            ]
-          }
-        }
-      ],
-      "request": {
-        "method": "POST",
-        "header": [],
-        "body": {
-          "mode": "raw",
-          "raw": "{\r\n  \"numero1\": 10,\r\n  \"numero2\": 5\r\n}",
-          "options": {
-            "raw": {
-              "language": "json"
+          "name": "10 - 5 = 5",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const requestData = JSON.parse(pm.request.body.raw);",
+                  "const jsonData = pm.response.json();",
+                  "pm.test(\"Status code is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Response structure is correct\", () => pm.expect(jsonData).to.have.all.keys(\"numero1\", \"numero2\", \"operacao\", \"resultado\"));",
+                  "pm.test(\"numero1 matches request\", () => pm.expect(jsonData.numero1).to.eql(requestData.numero1));",
+                  "pm.test(\"numero2 matches request\", () => pm.expect(jsonData.numero2).to.eql(requestData.numero2));",
+                  "pm.test(\"Operation is SUBTRAIR\", () => pm.expect(jsonData.operacao).to.eql(\"SUBTRAIR\"));",
+                  "pm.test(\"Result is correct\", () => pm.expect(jsonData.resultado).to.eql(requestData.numero1 - requestData.numero2));",
+                  "pm.test(\"Response time is less than 2000ms\", () => pm.expect(pm.response.responseTime).to.be.below(2000));"
+                ]
+              }
             }
-          }
-        },
-        "url": {
-          "raw": "http://localhost:8080/calculadora/multiplicar",
-          "protocol": "http",
-          "host": [
-            "localhost"
           ],
-          "port": "8080",
-          "path": [
-            "calculadora",
-            "multiplicar"
-          ]
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"numero1\": 10,\n  \"numero2\": 5\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/calculadora/subtrair",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "calculadora",
+                "subtrair"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "100 - 50 = 50",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const requestData = JSON.parse(pm.request.body.raw);",
+                  "const jsonData = pm.response.json();",
+                  "pm.test(\"Status code is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Response structure is correct\", () => pm.expect(jsonData).to.have.all.keys(\"numero1\", \"numero2\", \"operacao\", \"resultado\"));",
+                  "pm.test(\"Operation is SUBTRAIR\", () => pm.expect(jsonData.operacao).to.eql(\"SUBTRAIR\"));",
+                  "pm.test(\"Result is correct\", () => pm.expect(jsonData.resultado).to.eql(requestData.numero1 - requestData.numero2));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"numero1\": 100,\n  \"numero2\": 50\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/calculadora/subtrair",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "calculadora",
+                "subtrair"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "0 - 10 = -10",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const requestData = JSON.parse(pm.request.body.raw);",
+                  "const jsonData = pm.response.json();",
+                  "pm.test(\"Status code is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Response structure is correct\", () => pm.expect(jsonData).to.have.all.keys(\"numero1\", \"numero2\", \"operacao\", \"resultado\"));",
+                  "pm.test(\"Operation is SUBTRAIR\", () => pm.expect(jsonData.operacao).to.eql(\"SUBTRAIR\"));",
+                  "pm.test(\"Result is correct\", () => pm.expect(jsonData.resultado).to.eql(requestData.numero1 - requestData.numero2));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"numero1\": 0,\n  \"numero2\": 10\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/calculadora/subtrair",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "calculadora",
+                "subtrair"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "-10 - 5 = -15",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const requestData = JSON.parse(pm.request.body.raw);",
+                  "const jsonData = pm.response.json();",
+                  "pm.test(\"Status code is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Response structure is correct\", () => pm.expect(jsonData).to.have.all.keys(\"numero1\", \"numero2\", \"operacao\", \"resultado\"));",
+                  "pm.test(\"Operation is SUBTRAIR\", () => pm.expect(jsonData.operacao).to.eql(\"SUBTRAIR\"));",
+                  "pm.test(\"Result is correct\", () => pm.expect(jsonData.resultado).to.eql(requestData.numero1 - requestData.numero2));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"numero1\": -10,\n  \"numero2\": 5\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/calculadora/subtrair",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "calculadora",
+                "subtrair"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "-10 - -5 = -5",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const requestData = JSON.parse(pm.request.body.raw);",
+                  "const jsonData = pm.response.json();",
+                  "pm.test(\"Status code is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Response structure is correct\", () => pm.expect(jsonData).to.have.all.keys(\"numero1\", \"numero2\", \"operacao\", \"resultado\"));",
+                  "pm.test(\"Operation is SUBTRAIR\", () => pm.expect(jsonData.operacao).to.eql(\"SUBTRAIR\"));",
+                  "pm.test(\"Result is correct\", () => pm.expect(jsonData.resultado).to.eql(requestData.numero1 - requestData.numero2));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"numero1\": -10,\n  \"numero2\": -5\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/calculadora/subtrair",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "calculadora",
+                "subtrair"
+              ]
+            }
+          },
+          "response": []
         }
-      },
-      "response": []
+      ]
     },
     {
-      "name": "http://localhost:8080/calculadora/somar",
-      "event": [
+      "name": "MULTIPLICAR",
+      "item": [
         {
-          "listen": "test",
-          "script": {
-            "type": "text/javascript",
-            "exec": [
-              "pm.test(\"Status code is 200\", function () {\n    pm.response.to.have.status(200);\n});\n\npm.test(\"Response has correct structure\", function () {\n    const jsonData = pm.response.json();\n    pm.expect(jsonData).to.have.property(\"numero1\");\n    pm.expect(jsonData).to.have.property(\"numero2\");\n    pm.expect(jsonData).to.have.property(\"operacao\");\n    pm.expect(jsonData).to.have.property(\"resultado\");\n});\n\npm.test(\"Operation is SOMAR\", function () {\n    const jsonData = pm.response.json();\n    pm.expect(jsonData.operacao).to.eql(\"SOMAR\");\n});\n\npm.test(\"Result is correct sum of numero1 and numero2\", function () {\n    const jsonData = pm.response.json();\n    pm.expect(jsonData.resultado).to.eql(jsonData.numero1 + jsonData.numero2);\n});\n\npm.test(\"Response time is less than 2000ms\", function () {\n    pm.expect(pm.response.responseTime).to.be.below(2000);\n});"
-            ]
-          }
-        }
-      ],
-      "request": {
-        "method": "POST",
-        "header": [],
-        "body": {
-          "mode": "raw",
-          "raw": "{\r\n  \"numero1\": 10,\r\n  \"numero2\": 5\r\n}",
-          "options": {
-            "raw": {
-              "language": "json"
+          "name": "10 * 5 = 50",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const requestData = JSON.parse(pm.request.body.raw);",
+                  "const jsonData = pm.response.json();",
+                  "pm.test(\"Status code is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Response structure is correct\", () => pm.expect(jsonData).to.have.all.keys(\"numero1\", \"numero2\", \"operacao\", \"resultado\"));",
+                  "pm.test(\"Operation is MULTIPLICAR\", () => pm.expect(jsonData.operacao).to.eql(\"MULTIPLICAR\"));",
+                  "pm.test(\"Result is correct\", () => pm.expect(jsonData.resultado).to.eql(requestData.numero1 * requestData.numero2));",
+                  "pm.test(\"numero1 matches request\", () => pm.expect(jsonData.numero1).to.eql(requestData.numero1));",
+                  "pm.test(\"numero2 matches request\", () => pm.expect(jsonData.numero2).to.eql(requestData.numero2));",
+                  "pm.test(\"Response time is less than 2000ms\", () => pm.expect(pm.response.responseTime).to.be.below(2000));"
+                ]
+              }
             }
-          }
-        },
-        "url": {
-          "raw": "http://localhost:8080/calculadora/somar",
-          "protocol": "http",
-          "host": [
-            "localhost"
           ],
-          "port": "8080",
-          "path": [
-            "calculadora",
-            "somar"
-          ]
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"numero1\": 10,\n  \"numero2\": 5\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/calculadora/multiplicar",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "calculadora",
+                "multiplicar"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "100 * 50 = 5000",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const requestData = JSON.parse(pm.request.body.raw);",
+                  "const jsonData = pm.response.json();",
+                  "pm.test(\"Status code is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Response structure is correct\", () => pm.expect(jsonData).to.have.all.keys(\"numero1\", \"numero2\", \"operacao\", \"resultado\"));",
+                  "pm.test(\"Operation is MULTIPLICAR\", () => pm.expect(jsonData.operacao).to.eql(\"MULTIPLICAR\"));",
+                  "pm.test(\"Result is correct\", () => pm.expect(jsonData.resultado).to.eql(requestData.numero1 * requestData.numero2));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"numero1\": 100,\n  \"numero2\": 50\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/calculadora/multiplicar",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "calculadora",
+                "multiplicar"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "0 * 10 = 0",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const requestData = JSON.parse(pm.request.body.raw);",
+                  "const jsonData = pm.response.json();",
+                  "pm.test(\"Status code is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Response structure is correct\", () => pm.expect(jsonData).to.have.all.keys(\"numero1\", \"numero2\", \"operacao\", \"resultado\"));",
+                  "pm.test(\"Operation is MULTIPLICAR\", () => pm.expect(jsonData.operacao).to.eql(\"MULTIPLICAR\"));",
+                  "pm.test(\"Result is correct\", () => pm.expect(jsonData.resultado).to.eql(requestData.numero1 * requestData.numero2));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"numero1\": 0,\n  \"numero2\": 10\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/calculadora/multiplicar",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "calculadora",
+                "multiplicar"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "-10 * 5 = -50",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const requestData = JSON.parse(pm.request.body.raw);",
+                  "const jsonData = pm.response.json();",
+                  "pm.test(\"Status code is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Response structure is correct\", () => pm.expect(jsonData).to.have.all.keys(\"numero1\", \"numero2\", \"operacao\", \"resultado\"));",
+                  "pm.test(\"Operation is MULTIPLICAR\", () => pm.expect(jsonData.operacao).to.eql(\"MULTIPLICAR\"));",
+                  "pm.test(\"Result is correct\", () => pm.expect(jsonData.resultado).to.eql(requestData.numero1 * requestData.numero2));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"numero1\": -10,\n  \"numero2\": 5\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/calculadora/multiplicar",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "calculadora",
+                "multiplicar"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "-10 * -5 = 50",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const requestData = JSON.parse(pm.request.body.raw);",
+                  "const jsonData = pm.response.json();",
+                  "pm.test(\"Status code is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Response structure is correct\", () => pm.expect(jsonData).to.have.all.keys(\"numero1\", \"numero2\", \"operacao\", \"resultado\"));",
+                  "pm.test(\"Operation is MULTIPLICAR\", () => pm.expect(jsonData.operacao).to.eql(\"MULTIPLICAR\"));",
+                  "pm.test(\"Result is correct\", () => pm.expect(jsonData.resultado).to.eql(requestData.numero1 * requestData.numero2));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"numero1\": -10,\n  \"numero2\": -5\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/calculadora/multiplicar",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "calculadora",
+                "multiplicar"
+              ]
+            }
+          },
+          "response": []
         }
-      },
-      "response": []
+      ]
     },
     {
-      "name": "http://localhost:8080/calculadora/subtrair",
-      "event": [
+      "name": "DIVIDIR",
+      "item": [
         {
-          "listen": "test",
-          "script": {
-            "type": "text/javascript",
-            "exec": [
-              "pm.test(\"Status code is 200\", function () {\n    pm.response.to.have.status(200);\n});\n\npm.test(\"Response body has a 'resultado' field\", function () {\n    var jsonData = pm.response.json();\n    pm.expect(jsonData).to.have.property(\"resultado\");\n});\n\npm.test(\"The 'resultado' value equals numero1 - numero2\", function () {\n    var jsonData = pm.response.json();\n    pm.expect(jsonData.resultado).to.eql(jsonData.numero1 - jsonData.numero2);\n});\n\npm.test(\"The 'operacao' field equals 'SUBTRAIR'\", function () {\n    var jsonData = pm.response.json();\n    pm.expect(jsonData.operacao).to.eql(\"SUBTRAIR\");\n});\n\npm.test(\"Response time is less than 2000ms\", function () {\n    pm.expect(pm.response.responseTime).to.be.below(2000);\n});"
-            ]
-          }
-        }
-      ],
-      "request": {
-        "method": "POST",
-        "header": [],
-        "body": {
-          "mode": "raw",
-          "raw": "{\r\n  \"numero1\": 10,\r\n  \"numero2\": 5\r\n}",
-          "options": {
-            "raw": {
-              "language": "json"
+          "name": "10 / 5 = 2",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const requestData = JSON.parse(pm.request.body.raw);",
+                  "const jsonData = pm.response.json();",
+                  "pm.test(\"Status code is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Response structure is correct\", () => pm.expect(jsonData).to.have.all.keys(\"numero1\", \"numero2\", \"operacao\", \"resultado\"));",
+                  "pm.test(\"numero1 matches request\", () => pm.expect(jsonData.numero1).to.eql(requestData.numero1));",
+                  "pm.test(\"numero2 matches request\", () => pm.expect(jsonData.numero2).to.eql(requestData.numero2));",
+                  "pm.test(\"Operation is DIVIDIR\", () => pm.expect(jsonData.operacao).to.eql(\"DIVIDIR\"));",
+                  "pm.test(\"Result is correct\", () => pm.expect(jsonData.resultado).to.eql(requestData.numero1 / requestData.numero2));",
+                  "pm.test(\"Result is finite\", () => pm.expect(Number.isFinite(jsonData.resultado)).to.be.true);",
+                  "pm.test(\"Response time is less than 2000ms\", () => pm.expect(pm.response.responseTime).to.be.below(2000));"
+                ]
+              }
             }
-          }
-        },
-        "url": {
-          "raw": "http://localhost:8080/calculadora/subtrair",
-          "protocol": "http",
-          "host": [
-            "localhost"
           ],
-          "port": "8080",
-          "path": [
-            "calculadora",
-            "subtrair"
-          ]
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"numero1\": 10,\n  \"numero2\": 5\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/calculadora/dividir",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "calculadora",
+                "dividir"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "100 / 10 = 10",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const requestData = JSON.parse(pm.request.body.raw);",
+                  "const jsonData = pm.response.json();",
+                  "pm.test(\"Status code is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Response structure is correct\", () => pm.expect(jsonData).to.have.all.keys(\"numero1\", \"numero2\", \"operacao\", \"resultado\"));",
+                  "pm.test(\"Operation is DIVIDIR\", () => pm.expect(jsonData.operacao).to.eql(\"DIVIDIR\"));",
+                  "pm.test(\"Result is correct\", () => pm.expect(jsonData.resultado).to.eql(requestData.numero1 / requestData.numero2));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"numero1\": 100,\n  \"numero2\": 10\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/calculadora/dividir",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "calculadora",
+                "dividir"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "50 / 5 = 10",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const requestData = JSON.parse(pm.request.body.raw);",
+                  "const jsonData = pm.response.json();",
+                  "pm.test(\"Status code is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Response structure is correct\", () => pm.expect(jsonData).to.have.all.keys(\"numero1\", \"numero2\", \"operacao\", \"resultado\"));",
+                  "pm.test(\"Operation is DIVIDIR\", () => pm.expect(jsonData.operacao).to.eql(\"DIVIDIR\"));",
+                  "pm.test(\"Result is correct\", () => pm.expect(jsonData.resultado).to.eql(requestData.numero1 / requestData.numero2));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"numero1\": 50,\n  \"numero2\": 5\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/calculadora/dividir",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "calculadora",
+                "dividir"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "-10 / 5 = -2",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const requestData = JSON.parse(pm.request.body.raw);",
+                  "const jsonData = pm.response.json();",
+                  "pm.test(\"Status code is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Response structure is correct\", () => pm.expect(jsonData).to.have.all.keys(\"numero1\", \"numero2\", \"operacao\", \"resultado\"));",
+                  "pm.test(\"Operation is DIVIDIR\", () => pm.expect(jsonData.operacao).to.eql(\"DIVIDIR\"));",
+                  "pm.test(\"Result is correct\", () => pm.expect(jsonData.resultado).to.eql(requestData.numero1 / requestData.numero2));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"numero1\": -10,\n  \"numero2\": 5\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/calculadora/dividir",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "calculadora",
+                "dividir"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "-10 / -5 = 2",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const requestData = JSON.parse(pm.request.body.raw);",
+                  "const jsonData = pm.response.json();",
+                  "pm.test(\"Status code is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Response structure is correct\", () => pm.expect(jsonData).to.have.all.keys(\"numero1\", \"numero2\", \"operacao\", \"resultado\"));",
+                  "pm.test(\"Operation is DIVIDIR\", () => pm.expect(jsonData.operacao).to.eql(\"DIVIDIR\"));",
+                  "pm.test(\"Result is correct\", () => pm.expect(jsonData.resultado).to.eql(requestData.numero1 / requestData.numero2));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"numero1\": -10,\n  \"numero2\": -5\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/calculadora/dividir",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "calculadora",
+                "dividir"
+              ]
+            }
+          },
+          "response": []
         }
-      },
-      "response": []
+      ]
+    },
+    {
+      "name": "DIVISÃO POR ZERO",
+      "item": [
+        {
+          "name": "10 / 0 = 0",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const requestData = JSON.parse(pm.request.body.raw);",
+                  "const jsonData = pm.response.json();",
+                  "",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response structure is correct\", function () {",
+                  "    pm.expect(jsonData).to.have.all.keys(\"numero1\", \"numero2\", \"operacao\", \"resultado\");",
+                  "});",
+                  "",
+                  "pm.test(\"numero1 matches request\", function () {",
+                  "    pm.expect(jsonData.numero1).to.eql(requestData.numero1);",
+                  "});",
+                  "",
+                  "pm.test(\"numero2 matches request\", function () {",
+                  "    pm.expect(jsonData.numero2).to.eql(requestData.numero2);",
+                  "});",
+                  "",
+                  "pm.test(\"Operation is DIVIDIR\", function () {",
+                  "    pm.expect(jsonData.operacao).to.eql(\"DIVIDIR\");",
+                  "});",
+                  "",
+                  "pm.test(\"Division by zero returns zero\", function () {",
+                  "    pm.expect(jsonData.resultado).to.eql(0);",
+                  "});",
+                  "",
+                  "pm.test(\"Result is finite\", function () {",
+                  "    pm.expect(Number.isFinite(jsonData.resultado)).to.be.true;",
+                  "});",
+                  "",
+                  "pm.test(\"Response time is less than 2000ms\", function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"numero1\": 10,\n  \"numero2\": 0\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/calculadora/dividir",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "calculadora",
+                "dividir"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
     }
   ]
 }
