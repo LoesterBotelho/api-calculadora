@@ -1,3 +1,40 @@
+# API Calculadora
+
+Este repositório contém o projeto da **API Calculadora**, incluindo a configuração Docker, automação de build/push e suíte de testes automatizados com Newman.
+
+## Estrutura de Arquivos
+
+* `Dockerfile`: Configuração para containerização da aplicação.
+* `docker-compose.yml`: Arquivo de orquestração do Docker Compose.
+* `api-calculadora.postman_collection.json`: Coleção de testes do Postman.
+* `build.bat`: Script de build e push para o Docker Hub.
+* `execute_compose.bat`: Script para subir o ambiente usando o Docker Compose.
+* `execute_newman.bat`: Script para executar os testes automatizados via Newman.
+
+---
+
+## Como Executar o Projeto
+
+### 1. Subindo o Container com Docker Compose
+Para iniciar a aplicação em segundo plano (detached mode), utilize o Docker Compose:
+
+```bash
+docker compose up -d
+```
+*(Ou utilize o arquivo `execute_compose.bat` se estiver no Windows).*
+
+### 2. Executando os Testes Automatizados (Newman)
+O projeto conta com testes automatizados do Postman executados via linha de comando através do Newman. O script verifica se o Node.js está instalado e se o Newman já está presente na máquina antes de rodar:
+
+```bash
+npm install -g newman --silent
+echo Executando a colecao de testes com o Newman...
+newman run api-calculadora.postman_collection.json
+```
+*(Ou execute diretamente o script `execute_newman.bat`).*
+
+---
+
 # Swagger / OpenAPI
 
 A API possui documentação interativa utilizando **Swagger UI** e **Springdoc OpenAPI**.
